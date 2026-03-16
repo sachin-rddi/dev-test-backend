@@ -1,3 +1,13 @@
+const getRequiredEnv = (variable: string): string => {
+  const value = process.env[variable];
+
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${variable}`);
+  }
+
+  return value;
+};
+
 export const config = {
-  devBaseApi: "https://2sp6lmzjdd.execute-api.eu-west-2.amazonaws.com/dev"
-}
+  devBaseApi: getRequiredEnv("DEFECT_DETECTION_API_URL"),
+};

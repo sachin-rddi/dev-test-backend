@@ -1,0 +1,21 @@
+service: rddi-dev-test-backend
+
+frameworkVersion: "4"
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs24.x
+  region: eu-west-2
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  checkForDefects:
+    handler: lib/backend/src/index.handler
+    events:
+      - http:
+          path: /defect-detection
+          method: POST
+          cors: true

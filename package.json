@@ -6,14 +6,21 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest --watch=false --coverage"
+    "test": "vitest --watch=false --coverage",
+    "build:ci": "yarn workspaces foreach -Apt run build",
+    "lint:ci": "eslint . --ext .ts",
+    "lint": "eslint . --ext .ts --fix",
+    "zip": "zip -r lambda-deploy.zip lib node_modules package.json"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.161",
+    "serverless-offline": "^14.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
   "dependencies": {
+    "@middy/core": "^7.1.7",
     "@types/node": "^25.3.3",
     "aws-sdk-client-mock-vitest": "^7.0.1",
     "axios": "^1.13.6",
