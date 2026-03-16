@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es2022"],
+    "removeComments": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "module": "es2022",
+    "noEmit": true,
+    "noUnusedParameters": false,
+    "sourceMap": true,
+    "target": "es2022",
+    "strict": true,
+    "outDir": "lib",
+    "esModuleInterop": true,
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"]
+}
