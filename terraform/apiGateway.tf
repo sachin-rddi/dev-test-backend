@@ -1,6 +1,8 @@
 resource "aws_api_gateway_rest_api" "dev_test_api_gateway" {
   name        = "${local.resource_prefix}-api-gateway"
   description = "API Gateway for the defect detection service as part of the dev test"
+
+  binary_media_types = ["multipart/form-data", "*/*"]
 }
 
 resource "aws_api_gateway_resource" "defect_detection_resource" {
@@ -29,6 +31,14 @@ resource "aws_api_gateway_integration" "lambda" {
 resource "aws_api_gateway_deployment" "deployment" {
   depends_on  = [aws_api_gateway_integration.lambda]
   rest_api_id = aws_api_gateway_rest_api.dev_test_api_gateway.id
+
+  triggers = {
+    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.dev_test_api_gateway))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_api_gateway_stage" "stage" {

@@ -1,26 +1,27 @@
 import { config } from "../domain/config";
 import { logger } from "../../../shared/logger";
 import axios from "axios";
-import FormData from "form-data";
-import fs from "fs";
 
 /**
  * Retrieves defect detection results from the defect detection API.
- * @param filepath - The path to the image file to post to the defect detection API.
+ * @param body - The base64-encoded body from the API Gateway event.
+ * @param contentType - The Content-Type header from the original request.
  * @returns The defect detection results.
  */
 export const retrieveDefectDetectionResults = async (
-  filepath: string,
+  body: string,
+  contentType: string,
 ): Promise<unknown> => {
   const defectDetectionUrl = `${config.devBaseApi}/defect-detection`;
-  logger.info("Retrieving defect detection results", {
-    filepath,
-    defectDetectionUrl,
-  });
+  logger.info("Retrieving defect detection results");
 
   let response;
   try {
-    response = await axios.post(defectDetectionUrl, buildRequestBody(filepath));
+    response = await axios.post(
+      defectDetectionUrl,
+      Buffer.from(body, "base64"),
+      { headers: { "Content-Type": contentType } },
+    );
     logger.info("Successfully retrieved defect detection results", {
       responseData: response.data,
     });
@@ -29,15 +30,4 @@ export const retrieveDefectDetectionResults = async (
     throw new Error("Error retrieving defect detection results");
   }
   return response.data;
-};
-
-/**
- * Builds the request body for the defect detection API.
- * @param filepath - The path to the image file to include in the request body.
- * @returns The request body as a FormData object.
- */
-const buildRequestBody = (filepath: string) => {
-  var bodyFormData = new FormData();
-  bodyFormData.append("image", fs.createReadStream(filepath));
-  return bodyFormData;
 };

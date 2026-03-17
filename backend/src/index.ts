@@ -1,26 +1,43 @@
-import middy from "@middy/core";
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { checkForDefects } from "./use-cases/check-for-defects";
 
-export const handler = middy<APIGatewayProxyEvent, APIGatewayProxyResult>(async (event: APIGatewayProxyEvent) => {
-    const filename = event.queryStringParameters?.filename;
-    if (!filename) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "Filename is required" }),
-      };
-    }
+/**
+ * Lambda function handler for checking defects in an image.
+ * @param event - The API Gateway event containing the request data.
+ * @returns The API Gateway response with the defect detection results.
+ */
+export const handler = async (
+  event: APIGatewayProxyEvent,
+): Promise<APIGatewayProxyResult> => {
+  const body = event.body;
+  const contentType =
+    event.headers["Content-Type"] ?? event.headers["content-type"];
+  if (!body || !contentType) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: "400: Body & Content-Type header are required",
+      }),
+    };
+  }
 
-    try {
-      const defects = await checkForDefects(filename);
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: "Defects retrieved successfully", defects }),
-      };
-    } catch (error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ message: "Error getting defects:", error }),
-      };
-    }
-  });
+  const decodedBody = event.isBase64Encoded
+    ? body
+    : Buffer.from(body).toString("base64");
+
+  try {
+    const defects = await checkForDefects(decodedBody, contentType);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "200: Defects retrieved successfully",
+        defects,
+      }),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "500: Error getting defects", error }),
+    };
+  }
+};

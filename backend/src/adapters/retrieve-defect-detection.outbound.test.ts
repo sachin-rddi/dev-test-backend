@@ -22,8 +22,6 @@ vi.mock("axios", () => ({
   },
 }));
 
-const mockFileName = "test-image.jpg";
-
 const mockData = {
   x: 0,
   y: 0,
@@ -32,11 +30,17 @@ const mockData = {
   type: "EROSION",
 };
 
+const mockBody = "test-image.png";
+const mockContentType = "image/png";
+
 describe("retrieveDefectDetectionResults", () => {
   it("should retrieve defect detection results successfully", async () => {
     const loggerSpy = vi.spyOn(logger, "info");
 
-    const result = await retrieveDefectDetectionResults(mockFileName);
+    const result = await retrieveDefectDetectionResults(
+      mockBody,
+      mockContentType,
+    );
 
     expect(loggerSpy).toHaveBeenCalledWith(
       "Successfully retrieved defect detection results",
@@ -58,9 +62,9 @@ describe("retrieveDefectDetectionResults", () => {
     const loggerSpy = vi.spyOn(logger, "error");
     (axios.post as Mock).mockRejectedValueOnce(new Error("POST failed"));
 
-    await expect(retrieveDefectDetectionResults(mockFileName)).rejects.toThrow(
-      "Error retrieving defect detection results",
-    );
+    await expect(
+      retrieveDefectDetectionResults(mockBody, mockContentType),
+    ).rejects.toThrow("Error retrieving defect detection results");
 
     expect(loggerSpy).toHaveBeenCalledWith(
       "Error retrieving defect detection results",

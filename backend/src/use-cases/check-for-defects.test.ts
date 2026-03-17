@@ -34,6 +34,9 @@ vi.mock("./validate-defect-results", () => ({
   }),
 }));
 
+const mockBody = "test-image.png";
+const mockContentType = "image/png";
+
 const mockResult = {
   status: "OK",
   data: [
@@ -51,7 +54,7 @@ describe("checkForDefects", () => {
   describe("Successfully checks for defects", () => {
     it("should check for defects successfully", async () => {
       const loggerSpy = vi.spyOn(logger, "info");
-      const result = await checkForDefects("test-image.png");
+      const result = await checkForDefects(mockBody, mockContentType);
 
       expect(result).toEqual(mockResult.data);
 
@@ -69,7 +72,7 @@ describe("checkForDefects", () => {
         new Error("Retrieval failed"),
       );
 
-      await expect(checkForDefects("test-image.png")).rejects.toThrow(
+      await expect(checkForDefects(mockBody, mockContentType)).rejects.toThrow(
         "Error retrieving and validating defects",
       );
       expect(loggerSpy).toHaveBeenCalledWith(
@@ -84,7 +87,7 @@ describe("checkForDefects", () => {
         throw new Error("Validation failed");
       });
 
-      await expect(checkForDefects("test-image.png")).rejects.toThrow(
+      await expect(checkForDefects(mockBody, mockContentType)).rejects.toThrow(
         "Error retrieving and validating defects",
       );
 
