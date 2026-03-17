@@ -6,7 +6,9 @@ resource "aws_lambda_function" "backend_lambda" {
   runtime          = var.lambda_runtime
   memory_size      = 1024
   timeout          = 900
+  filename         = "../lambda-deploy.zip"
   source_code_hash = filebase64sha256("../lambda-deploy.zip")
+
   environment {
     variables = {
       DEFECT_DETECTION_API_URL = "https://2sp6lmzjdd.execute-api.eu-west-2.amazonaws.com/dev"
