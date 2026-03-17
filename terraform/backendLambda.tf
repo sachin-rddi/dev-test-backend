@@ -1,12 +1,11 @@
 # Create the Lambda function
 resource "aws_lambda_function" "backend_lambda" {
-  function_name = "${local.resource_prefix}-backend-lambda"
-  role          = aws_iam_role.backend_lambda_role.arn
-  handler        = "lib/backend/src/index.handler"
-  runtime        = var.lambda_runtime
+  function_name    = "${local.resource_prefix}-backend-lambda"
+  role             = aws_iam_role.backend_lambda_role.arn
+  handler          = "index.handler"
+  runtime          = var.lambda_runtime
   memory_size      = 1024
   timeout          = 900
-  filename         = "../lambda-deploy.zip"
   source_code_hash = filebase64sha256("../lambda-deploy.zip")
   environment {
     variables = {
@@ -40,9 +39,9 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.backend_lambda.function_name}"
+  function_name = aws_lambda_function.backend_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.dev_test_api_gateway.execution_arn}/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.dev_test_api_gateway.execution_arn}/*/*"
 }
 
 
