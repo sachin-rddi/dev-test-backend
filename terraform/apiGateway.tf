@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "dev_test_api_gateway" {
   name        = "${local.resource_prefix}-api-gateway"
-  description = "API Gateway for the defect detection service"
+  description = "API Gateway for the defect detection service as part of the dev test"
 }
 
 resource "aws_api_gateway_resource" "defect_detection_resource" {
