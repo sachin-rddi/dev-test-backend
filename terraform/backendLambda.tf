@@ -3,7 +3,7 @@ resource "aws_lambda_function" "backend_lambda" {
   function_name    = "${local.resource_prefix}-backend-lambda"
   description      = "Lambda function for the defect detection service as part of the dev test"
   role             = aws_iam_role.backend_lambda_role.arn
-  handler          = "index.handler"
+  handler          = "lib/backend/src/index.handler"
   runtime          = var.lambda_runtime
   memory_size      = 1024
   timeout          = 900

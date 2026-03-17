@@ -1,6 +1,5 @@
 {
   "name": "dev-test",
-  "type": "module",
   "packageManager": "yarn@4.10.3",
   "scripts": {
     "build": "tsc",

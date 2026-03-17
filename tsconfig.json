@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noUnusedLocals": true,
-    "module": "es2022",
+    "module": "commonjs",
     "noEmit": false,
     "noUnusedParameters": false,
     "sourceMap": true,
@@ -17,5 +17,5 @@
     "skipLibCheck": true
   },
   "include": ["./**/*.ts"],
-  "exclude": ["node_modules",  ".terraform/**/*"]
+  "exclude": ["node_modules", ".terraform/**/*"]
 }
