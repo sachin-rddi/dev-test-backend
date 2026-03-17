@@ -22,6 +22,12 @@ vi.mock("axios", () => ({
   },
 }));
 
+vi.mock("../domain/config", () => ({
+  config: {
+    devBaseApi: "http://localhost:3000",
+  },
+}));
+
 const mockData = {
   x: 0,
   y: 0,
