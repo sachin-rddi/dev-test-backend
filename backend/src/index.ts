@@ -28,9 +28,11 @@ export const handler = async (
 
   try {
     logger.info("Checking for defects", {
-      APIGatewayEvent: event,
-      EventBody: body,
-      ContentType: contentType,
+      requestId: event.requestContext.requestId,
+      httpMethod: event.httpMethod,
+      path: event.path,
+      contentType,
+      bodySizeBytes: Buffer.byteLength(body),
     });
     const defects = await checkForDefects(decodedBody, contentType);
     return {
