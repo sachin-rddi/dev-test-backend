@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, Mock } from "vitest";
-import { retrieveDefectDetectionResults } from "@backend/src/adapters/retrieve-defect-detection.outbound";
+import { retrieveDefectDetectionResults } from "./retrieve-defect-detection.outbound";
 import axios from "axios";
-import { logger } from "@shared/logger";
+import { logger } from "shared/logger";
 
 vi.mock("axios", () => ({
   default: {

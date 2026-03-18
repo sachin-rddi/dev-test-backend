@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, Mock } from "vitest";
-import { validateDefectResults } from "@backend/src/use-cases/validate-defect-results";
-import { defectDetectionResult } from "@backend/src/domain/models";
-import { logger } from "@shared/logger";
+import { validateDefectResults } from "./validate-defect-results";
+import { defectDetectionResult } from "../domain/models";
+import { logger } from "shared/logger";
 
 vi.mock("zod", () => ({
   default: { treeifyError: vi.fn().mockReturnValue({}) },

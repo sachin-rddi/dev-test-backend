@@ -1,5 +1,5 @@
-import { config } from "@backend/src/domain/config";
-import { logger } from "@shared/logger";
+import { config } from "../domain/config";
+import { logger } from "../../../shared/logger";
 import axios from "axios";
 
 /**

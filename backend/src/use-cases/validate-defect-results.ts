@@ -1,6 +1,6 @@
-import { defectDetectionResult } from "@backend/src/domain/models";
+import { defectDetectionResult } from "../domain/models";
 import zod from "zod";
-import { logger } from "@shared/logger";
+import { logger } from "../../../shared/logger";
 
 /**
  * Validates the defect detection results against the expected schema.

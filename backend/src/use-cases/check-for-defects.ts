@@ -1,7 +1,7 @@
-import { retrieveDefectDetectionResults } from "@backend/src/adapters/retrieve-defect-detection.outbound";
-import { defects } from "@backend/src/domain/models";
-import { validateDefectResults } from "@backend/src/use-cases/validate-defect-results";
-import { logger } from "@shared/logger";
+import { retrieveDefectDetectionResults } from "../adapters/retrieve-defect-detection.outbound";
+import { defects } from "../domain/models";
+import { validateDefectResults } from "./validate-defect-results";
+import { logger } from "../../../shared/logger";
 
 /**
  * Checks for defects in the given image file.

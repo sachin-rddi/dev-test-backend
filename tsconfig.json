@@ -14,13 +14,7 @@
     "strict": true,
     "outDir": "lib",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "paths":
-      {
-        "@*": ["./*"],
-        "@shared/*": ["./shared/*"],
-        "@backend/*": ["./backend/*"]
-      }
+    "skipLibCheck": true
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", ".terraform/**/*"]
