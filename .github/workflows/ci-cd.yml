@@ -1,0 +1,84 @@
+name: CI/CD - Dev Test Backend
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  set-env:
+    name: Set Environment
+    runs-on: ubuntu-latest
+    outputs:
+      env: ${{ steps.set.outputs.env }}
+    steps:
+      - name: Set environment variable
+        id: set
+        run: |
+          echo "env=dev" >> $GITHUB_OUTPUT
+
+  deploy:
+    name: Build and Deploy
+    needs: set-env
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ needs.set-env.outputs.env }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: eu-west-2
+      ENV: ${{ needs.set-env.outputs.env }}
+    steps:
+      - name: Check required secrets
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "Errors: AWS_ACCESS_KEY_ID is missing"
+            exit 1
+          fi
+          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "Errors: AWS_SECRET_ACCESS_KEY is missing"
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+
+      - name: Zip Lambda
+        run: yarn zip
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.6
+          terraform_wrapper: false
+
+      - name: Terraform Format Check
+        run: terraform -chdir=terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init -backend-config=${{ needs.set-env.outputs.env }}/backend.hcl
+
+      - name: Terraform Validate
+        run: terraform -chdir=terraform validate
+
+      - name: Terraform Plan
+        run: terraform -chdir=terraform plan -out=tfplan -var-file=${{ needs.set-env.outputs.env }}/variables.tfvars
+
+      - name: Terraform Apply
+        run: terraform -chdir=terraform apply -auto-approve tfplan
