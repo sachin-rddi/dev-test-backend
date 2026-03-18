@@ -15,6 +15,6 @@ variable "account_id" {
 }
 
 variable "environment" {
-  description = "Deployment environment (e.g., dev, staging, prod)"
+  description = "Deployment environment (e.g. dev, pre-prod, prod)"
   type        = string
 }
