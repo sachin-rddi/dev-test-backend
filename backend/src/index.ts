@@ -1,6 +1,6 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { checkForDefects } from "./use-cases/check-for-defects";
-import { logger } from "shared/logger";
+import { logger } from "../../shared/logger";
 
 /**
  * Lambda function handler for checking defects in an image.
@@ -27,7 +27,11 @@ export const handler = async (
     : Buffer.from(body).toString("base64");
 
   try {
-    logger.info("Checking for defects", { APIGatewayEvent: event, EventBody: body, ContentType: contentType });
+    logger.info("Checking for defects", {
+      APIGatewayEvent: event,
+      EventBody: body,
+      ContentType: contentType,
+    });
     const defects = await checkForDefects(decodedBody, contentType);
     return {
       statusCode: 200,
