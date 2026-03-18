@@ -1,10 +1,10 @@
 import { describe, it, vi, expect, Mock } from "vitest";
-import { checkForDefects } from "./check-for-defects";
-import { retrieveDefectDetectionResults } from "../adapters/retrieve-defect-detection.outbound";
-import { validateDefectResults } from "./validate-defect-results";
-import { logger } from "shared/logger";
+import { checkForDefects } from "@backend/src/use-cases/check-for-defects";
+import { retrieveDefectDetectionResults } from "@backend/src/adapters/retrieve-defect-detection.outbound";
+import { validateDefectResults } from "@backend/src/use-cases/validate-defect-results";
+import { logger } from "@shared/logger";
 
-vi.mock("../adapters/retrieve-defect-detection.outbound", () => ({
+vi.mock("@backend/src/adapters/retrieve-defect-detection.outbound", () => ({
   retrieveDefectDetectionResults: vi.fn().mockResolvedValue({
     status: "OK",
     data: [
@@ -19,7 +19,7 @@ vi.mock("../adapters/retrieve-defect-detection.outbound", () => ({
   }),
 }));
 
-vi.mock("./validate-defect-results", () => ({
+vi.mock("@backend/src/use-cases/validate-defect-results", () => ({
   validateDefectResults: vi.fn().mockReturnValue({
     status: "OK",
     data: [

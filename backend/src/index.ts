@@ -1,6 +1,6 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { checkForDefects } from "./use-cases/check-for-defects";
-import { logger } from "../../shared/logger";
+import { checkForDefects } from "@backend/src/use-cases/check-for-defects";
+import { logger } from "@shared/logger";
 
 /**
  * Lambda function handler for checking defects in an image.
