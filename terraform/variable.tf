@@ -9,11 +9,6 @@ variable "region" {
   type        = string
 }
 
-variable "account_id" {
-  description = "AWS account ID to deploy resources in"
-  type        = string
-}
-
 variable "environment" {
   description = "Deployment environment (e.g. dev, pre-prod, prod)"
   type        = string
