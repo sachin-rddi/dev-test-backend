@@ -12,7 +12,7 @@ resource "aws_lambda_function" "backend_lambda" {
 
   environment {
     variables = {
-      DEFECT_DETECTION_API_URL = "https://2sp6lmzjdd.execute-api.eu-west-2.amazonaws.com/dev"
+      DEFECT_DETECTION_API_URL = var.defect_detection_api_url
     }
   }
 }

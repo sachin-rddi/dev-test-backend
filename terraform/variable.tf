@@ -9,6 +9,11 @@ variable "region" {
   type        = string
 }
 
+variable "defect_detection_api_url" {
+  description = "URL of the defect detection API"
+  type        = string
+}
+
 variable "environment" {
   description = "Deployment environment (e.g. dev, pre-prod, prod)"
   type        = string
